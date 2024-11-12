@@ -1,115 +1,102 @@
 ﻿namespace ConsoleApp1;
 
+using System.Text;
+
 internal class Program
 {
+    private static int num = 0;
+
     static void Main(string[] args)
     {
-        A a = new A();
-        C c = new C();
-
-        Print(a);
-        Print(c);
+        IWindow car = new Car();
+        car.Open();
+        car.Close();
 
 
-        BanckAccount account1 = new BanckAccount("Vova");
-        BanckAccount account2 = new BanckAccount("Anna");
-        BanckAccount account3 = new BanckAccount("Natasha");
+        IOpen window = new Window();
 
-        account1.AmountChanged += Account_AmountChanged;
-        account2.AmountChanged += Account_AmountChanged;
-        account3.AmountChanged += Account_AmountChanged;
-
-        account1.AddMoney(300000);
-        account2.AddMoney(300000);
-        account3.AddMoney(300000);
-
+        Open(car);
+        Open(window);
     }
 
-    private static void Print(A a)
+    static void Open(IOpen open)
     {
-        a.B();
-    }
-
-    private static void Account_AmountChanged(object? sender, AmountChangedArgs e)
-    {
-        BanckAccount b = sender as BanckAccount;
-        Console.WriteLine($"{b.Name}: {e.Operation} with sum {e.Value}");
+        open.Open();
     }
 }
 
-delegate double GetData();
-
-enum TypeOperation
+public interface IOpen
 {
-    withdraw,
-    add,
-    Denien
+    void Open();
+    string Name { get; }
+    private void Data(int y)
+    {
+        Console.WriteLine(y);
+    }
 }
 
-class AmountChangedArgs : EventArgs
+public interface IWindow : IOpen
 {
-    public decimal Value { get; set; }
-    public TypeOperation Operation { get; set; }
+    void Close();
 }
 
-class BanckAccount
+public class Window : Car, IOpen, IWork
 {
-    public string Name { get; private set; } 
-    public decimal Amount { get; private set; }
+    public string Name { get; set; }
 
-    public event EventHandler<AmountChangedArgs> AmountChanged;
-
-
-    public BanckAccount(string name)
+    public void Open()
     {
-        Name = name;
-    }
-
-    public void WithDraw(decimal amount)
-    {
-        AmountChanged?.Invoke(this, new AmountChangedArgs()
-        {
-            Operation = TypeOperation.withdraw,
-            Value = amount
-        });
-    }
-
-    public void AddMoney(decimal amount)
-    {
-        AmountChanged?.Invoke(this, new AmountChangedArgs()
-        {
-            Operation = TypeOperation.add,
-            Value = amount
-        });
+        Console.WriteLine("Вы открыли окно");
     }
 }
 
-abstract class N
+public class Car : IOpen, IWindow
 {
-    public abstract string GetName();
+    public string Name { get; set; }
+
+    public int Time => throw new NotImplementedException();
+
+    public event EventHandler WorkStoped;
+    public event EventHandler WorkStarted;
+
+    void IOpen.Open()
+    {
+        Console.WriteLine("Вы открыли машину");
+    }
+
+    void IWindow.Open()
+    {
+        Console.WriteLine("Вы открыли окно");
+    }
+
+    public void Start(TimeSpan time)
+    {
+        throw new NotImplementedException();
+    }
+
+    public void Start(TimeSpan time, Action callBack)
+    {
+        throw new NotImplementedException();
+    }
+
+    public int Stop()
+    {
+        throw new NotImplementedException();
+    }
 }
-class A : N
+
+public interface IWork 
 {
-    public override string GetName()
+    event EventHandler WorkStoped;
+    event EventHandler WorkStarted;
+    const int MAX = 40;
+    int Time { get; }
+    void Start(TimeSpan time);
+    void Start(TimeSpan time, Action callBack);
+    int Stop();
+    private void Create()
     {
-        return "My name is A";
-    }
-
-    public virtual void B()
-    {
-        Console.WriteLine("Call from A");
-    }
-}
-
-class C : A
-{
-    public override string GetName()
-    {
-        return "My name is C";
-    }
-
-    public override void B()
-    {
-        Console.WriteLine("Call from C");
+        Console.WriteLine("Created");
     }
 }
+
