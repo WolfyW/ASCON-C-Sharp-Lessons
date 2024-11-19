@@ -1,102 +1,38 @@
 ﻿namespace ConsoleApp1;
-
-using System.Text;
-
 internal class Program
 {
-    private static int num = 0;
-
     static void Main(string[] args)
     {
-        IWindow car = new Car();
-        car.Open();
-        car.Close();
+        //HTTP_Test test = new HTTP_Test();
+        //var sum = test.Sum(5, 2);
+        //var id = test.PostData("TestName", "Some Discr from data");
+        //var data = test.GetDataJson(id);
+        //var data1 = test.GetDataModel(id);
 
 
-        IOpen window = new Window();
+        //HTTP_NuGet_Test a = new HTTP_NuGet_Test();
+        //a.SumValue(4, 5);
+        //var id = a.PostValue("REST Client", "Post value from rest client");
+        //a.GetDataValue(id);
 
-        Open(car);
-        Open(window);
-    }
 
-    static void Open(IOpen open)
-    {
-        open.Open();
-    }
-}
+        //SimpleHttp.Client client = new SimpleHttp.Client("https://localhost:7216", new HttpClient());
+        //var res = client.SumValue(5, 2);
 
-public interface IOpen
-{
-    void Open();
-    string Name { get; }
-    private void Data(int y)
-    {
-        Console.WriteLine(y);
-    }
-}
+        //var data = client.PostSomeValueModelAsync(new SimpleHttp.Data()
+        //{
+        //    Description = "post from Nswag studio",
+        //    Name = "NSwag",
+        //}).Result;
 
-public interface IWindow : IOpen
-{
-    void Close();
-}
+        //var model = client.GetSomeValueModelAsync(data).Result;
 
-public class Window : Car, IOpen, IWork
-{
-    public string Name { get; set; }
+        //var manager = new ConnectionManager("localhost", 7216);
+        //Grpc_test grpc_Test = new Grpc_test(manager);
 
-    public void Open()
-    {
-        Console.WriteLine("Вы открыли окно");
+        //var sum = grpc_Test.SumValue(7, 25);
+
+        //var id = grpc_Test.PostData("grps client", "Send by grpc");
+        //var data = grpc_Test.GetData(id);
     }
 }
-
-public class Car : IOpen, IWindow
-{
-    public string Name { get; set; }
-
-    public int Time => throw new NotImplementedException();
-
-    public event EventHandler WorkStoped;
-    public event EventHandler WorkStarted;
-
-    void IOpen.Open()
-    {
-        Console.WriteLine("Вы открыли машину");
-    }
-
-    void IWindow.Open()
-    {
-        Console.WriteLine("Вы открыли окно");
-    }
-
-    public void Start(TimeSpan time)
-    {
-        throw new NotImplementedException();
-    }
-
-    public void Start(TimeSpan time, Action callBack)
-    {
-        throw new NotImplementedException();
-    }
-
-    public int Stop()
-    {
-        throw new NotImplementedException();
-    }
-}
-
-public interface IWork 
-{
-    event EventHandler WorkStoped;
-    event EventHandler WorkStarted;
-    const int MAX = 40;
-    int Time { get; }
-    void Start(TimeSpan time);
-    void Start(TimeSpan time, Action callBack);
-    int Stop();
-    private void Create()
-    {
-        Console.WriteLine("Created");
-    }
-}
-

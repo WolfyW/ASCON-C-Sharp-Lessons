@@ -2,6 +2,7 @@
 
 using System.Xml.Serialization;
 using System.Text.Json;
+using System.Runtime.Serialization;
 
 public class Seri
 {
@@ -50,6 +51,38 @@ public class Seri
         using (FileStream fs = new FileStream("person.xml", FileMode.OpenOrCreate))
         {
             xmlSerializer.Serialize(fs, new[] { person, person1, person2 });
+
+            Console.WriteLine("Object has been serialized");
+        }
+
+        XmlSerializer xmlDeSerializer = new XmlSerializer(typeof(Person[]));
+
+        using (FileStream fs = new FileStream("person.xml", FileMode.OpenOrCreate))
+        {
+            Person[]? newpeople = xmlSerializer.Deserialize(fs) as Person[];
+
+            if (newpeople != null)
+            {
+                foreach (Person p in newpeople)
+                {
+                    Console.WriteLine($"Name: {p.Name} --- Age: {p.Age}");
+                }
+            }
+        }
+    }
+
+
+    public static void XMLSer(Person people)
+    {
+        Person person = new Person();
+        person.Name = "Vasya";
+        person.LastName = "Pupkin";
+        person.Age = 30;
+
+        XmlSerializer xmlSerializer = new XmlSerializer(typeof(Person[]));
+        using (FileStream fs = new FileStream("person.xml", FileMode.OpenOrCreate))
+        {
+            xmlSerializer.Serialize(fs, new[] { person });
 
             Console.WriteLine("Object has been serialized");
         }

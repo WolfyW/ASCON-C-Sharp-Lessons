@@ -1,0 +1,53 @@
+﻿syntax = "proto3";
+
+import "google/protobuf/duration.proto";  
+import "google/protobuf/timestamp.proto";
+import "google/protobuf/any.proto";
+
+option csharp_namespace = "SimpleGrpcService";
+
+package gRpcService;
+
+service TestService {
+	rpc GetSomeValueJson(GetRequest) returns(GetJsonResponse);
+	rpc GetSomeValueModel(GetRequest) returns(GetModelResponse);
+	rpc SumValue(GetSumRequest) returns(GetSumResponse);
+	rpc PostSomeValueJson(PostJsonRequest) returns(PostResponse);
+	rpc PostSomeValueModel(PostModelRequest) returns(PostResponse);
+}
+
+message GetRequest {
+	int32 id = 1;
+}
+message GetJsonResponse {
+	string data = 1;
+}
+
+message GetModelResponse {
+	Data data = 1;
+}
+
+message GetSumRequest {
+	int32 x = 1;
+	int32 y = 2;
+}
+message GetSumResponse {
+	int32 result = 1;
+}
+
+
+message PostJsonRequest {	
+	string DataJson =	 1;
+}
+message PostResponse  {
+	int32 id = 1;
+}
+message PostModelRequest {	
+	Data DataModel = 1;
+}
+
+message Data {
+	int32 Id = 1;
+	string Name = 2;
+	string Description = 3;
+}
